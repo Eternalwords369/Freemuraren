@@ -1,0 +1,517 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Designbeslut som CSS-variabler                                      */
+/* ------------------------------------------------------------------ */
+:root {
+  /* Färg */
+  --c-bg: #070a12;
+  --c-surface: #0e1421;
+  --c-elevated: #141c2c;
+  --c-elevated-2: #1a2336;
+  --c-ink: #f1eee5;
+  --c-ink-2: #a4adbe;
+  --c-ink-3: #8a93a6;
+  --c-gold: #c7a96b;
+  --c-gold-strong: #dcc28a;
+  --c-gold-soft: rgba(199, 169, 107, 0.12);
+  --c-line: rgba(201, 190, 160, 0.16);
+  --c-line-strong: rgba(201, 190, 160, 0.3);
+  --c-focus: #f2d898;
+  --c-danger: #e59a8e;
+  --c-danger-soft: rgba(229, 154, 142, 0.12);
+  --c-success: #9cc8a6;
+  --c-success-soft: rgba(156, 200, 166, 0.12);
+
+  /* Kunskapskategorier – dämpade och åtskiljbara även utan färg (de har alltid text). */
+  --c-epi-historisk: #c7a96b;
+  --c-epi-filosofisk: #9fb6e2;
+  --c-epi-symbolisk: #c9a3d4;
+  --c-epi-vetenskap: #8cc7b3;
+
+  /* Typografi */
+  --font-display: "EB Garamond Variable", "EB Garamond", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Form */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --sidebar-w: 268px;
+  --measure: 68ch;
+
+  /* Rörelse */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 700ms;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-elevated: var(--c-elevated);
+  --color-elevated-2: var(--c-elevated-2);
+  --color-ink: var(--c-ink);
+  --color-ink-2: var(--c-ink-2);
+  --color-ink-3: var(--c-ink-3);
+  --color-gold: var(--c-gold);
+  --color-gold-strong: var(--c-gold-strong);
+  --color-gold-soft: var(--c-gold-soft);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-focus: var(--c-focus);
+  --color-danger: var(--c-danger);
+  --color-danger-soft: var(--c-danger-soft);
+  --color-success: var(--c-success);
+  --color-success-soft: var(--c-success-soft);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Bas                                                                 */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background: var(--c-bg);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--c-bg);
+    color: var(--c-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Statisk stjärnhimmel: några lager av små ljuspunkter och ett svagt galaktiskt dis. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(241, 238, 229, 0.55) 50%, transparent 51%),
+      radial-gradient(1px 1px at 72% 12%, rgba(241, 238, 229, 0.4) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 86% 64%, rgba(220, 194, 138, 0.5) 50%, transparent 51%),
+      radial-gradient(1px 1px at 34% 78%, rgba(241, 238, 229, 0.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 55% 42%, rgba(241, 238, 229, 0.25) 50%, transparent 51%),
+      radial-gradient(1px 1px at 22% 58%, rgba(241, 238, 229, 0.3) 50%, transparent 51%),
+      radial-gradient(1px 1px at 93% 30%, rgba(241, 238, 229, 0.3) 50%, transparent 51%),
+      radial-gradient(ellipse 70% 50% at 80% -10%, rgba(80, 100, 160, 0.14), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 0% 100%, rgba(199, 169, 107, 0.06), transparent 70%);
+    background-size:
+      420px 420px, 380px 380px, 640px 640px, 300px 300px, 520px 520px, 460px 460px, 700px 700px,
+      100% 100%, 100% 100%;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: rgba(199, 169, 107, 0.35);
+    color: var(--c-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  dialog {
+    color: var(--c-ink);
+  }
+
+  dialog::backdrop {
+    background: rgba(3, 5, 10, 0.72);
+    backdrop-filter: blur(2px);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Komponentklasser                                                    */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+  }
+
+  .meta {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--c-ink-3);
+  }
+
+  .card {
+    background: color-mix(in srgb, var(--c-surface) 92%, transparent);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-link {
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
+  }
+  .card-link:hover {
+    border-color: var(--c-line-strong);
+    background: var(--c-elevated);
+  }
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-line-strong), transparent);
+  }
+
+  /* Knappar */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    font-size: 0.9rem;
+    font-weight: 550;
+    line-height: 1;
+    white-space: nowrap;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      opacity var(--dur-fast);
+  }
+  @media (min-width: 1024px) {
+    .btn {
+      min-height: 40px;
+    }
+  }
+  .btn:disabled {
+    opacity: 0.5;
+  }
+  .btn-primary {
+    background: var(--c-gold);
+    color: #14100a;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--c-gold-strong);
+  }
+  .btn-primary:active:not(:disabled) {
+    background: #b39556;
+  }
+  .btn-secondary {
+    background: var(--c-elevated);
+    border-color: var(--c-line);
+    color: var(--c-ink);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--c-line-strong);
+    background: var(--c-elevated-2);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--c-ink-2);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    color: var(--c-ink);
+    background: rgba(241, 238, 229, 0.05);
+  }
+  .btn-danger {
+    background: var(--c-danger-soft);
+    border-color: rgba(229, 154, 142, 0.35);
+    color: var(--c-danger);
+  }
+  .btn-danger:hover:not(:disabled) {
+    background: rgba(229, 154, 142, 0.2);
+  }
+  .btn-sm {
+    min-height: 36px;
+    padding: 0 0.75rem;
+    font-size: 0.8125rem;
+  }
+  .btn-icon {
+    width: 44px;
+    padding: 0;
+  }
+  @media (min-width: 1024px) {
+    .btn-icon {
+      width: 40px;
+    }
+  }
+
+  /* Formulär */
+  .field-label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--c-ink);
+  }
+  .field-hint {
+    margin-top: 0.375rem;
+    font-size: 0.78rem;
+    color: var(--c-ink-3);
+  }
+  .field-error {
+    margin-top: 0.375rem;
+    font-size: 0.8rem;
+    color: var(--c-danger);
+  }
+  .input {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 0.625rem 0.8rem;
+    background: var(--c-bg);
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius-md);
+    color: var(--c-ink);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .input::placeholder {
+    color: var(--c-ink-3);
+  }
+  .input:hover {
+    border-color: rgba(201, 190, 160, 0.45);
+  }
+  .input:focus-visible {
+    outline: 2px solid var(--c-focus);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+  .input[aria-invalid="true"] {
+    border-color: var(--c-danger);
+  }
+  textarea.input {
+    min-height: 7rem;
+    line-height: 1.55;
+    resize: vertical;
+  }
+  select.input {
+    appearance: none;
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A4ADBE' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+  }
+
+  /* Chips och märken */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 36px;
+    padding: 0 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--c-line);
+    font-size: 0.8125rem;
+    color: var(--c-ink-2);
+    transition:
+      border-color var(--dur-fast),
+      color var(--dur-fast),
+      background-color var(--dur-fast);
+  }
+  .chip:hover {
+    color: var(--c-ink);
+    border-color: var(--c-line-strong);
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-current="page"] {
+    background: var(--c-gold-soft);
+    border-color: rgba(199, 169, 107, 0.55);
+    color: var(--c-gold-strong);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--c-line);
+    font-size: 0.72rem;
+    font-weight: 550;
+    letter-spacing: 0.02em;
+    color: var(--c-ink-2);
+    white-space: nowrap;
+  }
+  .badge-example {
+    border-style: dashed;
+    border-color: rgba(199, 169, 107, 0.5);
+    color: var(--c-gold);
+  }
+
+  /* Läsbar brödtext */
+  .prose-codex {
+    max-width: var(--measure);
+    color: var(--c-ink);
+    line-height: 1.7;
+  }
+  .prose-codex p + p {
+    margin-top: 1em;
+  }
+  .prose-codex h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+  }
+  .prose-codex h3 {
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+  }
+  .prose-codex ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-codex li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .prose-codex li::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.72em;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    border: 1px solid var(--c-gold);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    background: var(--c-gold);
+    color: #14100a;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Rörelse                                                             */
+/* ------------------------------------------------------------------ */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes slide-in-right {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-rise {
+  animation: rise-in var(--dur-slow) var(--ease-out) both;
+}
+.animate-orbit {
+  animation: orbit 90s linear infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.animate-fade {
+  animation: fade-in var(--dur-base) var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
